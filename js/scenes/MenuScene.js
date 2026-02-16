@@ -33,7 +33,7 @@ export class MenuScene extends Phaser.Scene {
         const versionFontSize = IS_MOBILE ? '10px' : '12px';
         const versionY = IS_MOBILE ? height - 15 : height - 20;
         
-        this.add.text(width / 2, versionY, 'v1.0.0 - Made with Phaser 3', {
+        this.add.text(width / 2, versionY, 'v1.0.0 - Made by Arturo Bracamontes', {
             fontSize: versionFontSize,
             fill: '#6366f1',
             fontFamily: 'Share Tech Mono'
@@ -426,7 +426,7 @@ export class MenuScene extends Phaser.Scene {
         // Créditos
         const credits = [
             'Game Design & Programming',
-            'Your Name',
+            'Arturo Bracamontes',
             '',
             'Built with',
             'Phaser 3.70.0',
@@ -434,7 +434,7 @@ export class MenuScene extends Phaser.Scene {
             'Inspired by',
             'Space Invaders (1978)',
             '',
-            '© 2024 - Portfolio Project'
+            '© 2026 - Portfolio Project'
         ];
         
         // ✅ MÓVIL: Tamaños y espaciado adaptativos

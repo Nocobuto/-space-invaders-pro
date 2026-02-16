@@ -4,7 +4,7 @@
  * Pantalla que se muestra al terminar el juego
  * Muestra estadísticas, logros y opciones
  * 
- * ✅ VERSIÓN OPTIMIZADA PARA MÓVIL
+ * ✅ VERSIÓN OPTIMIZADA PARA MÓVIL CON FIX DE BOTONES
  */
 
 import { IS_MOBILE } from '../config.js';
@@ -58,7 +58,7 @@ export class GameOverScene extends Phaser.Scene {
         bg.setOrigin(0);
         bg.setScrollFactor(0);
         
-        // ✅ MÓVIL: Menos partículas para mejor rendimiento
+        // Menos partículas para mejor rendimiento en móvil
         const particleCount = IS_MOBILE ? 25 : 50;
         
         for (let i = 0; i < particleCount; i++) {
@@ -84,12 +84,11 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     /**
-     * Crear título - ✅ RESPONSIVE
+     * Crear título
      */
     createTitle() {
-        const { width, height } = this.game.config;
+        const { width } = this.game.config;
         
-        // ✅ MÓVIL: Tamaño de fuente adaptativo
         const fontSize = IS_MOBILE ? '48px' : '72px';
         const yPosition = IS_MOBILE ? 60 : 80;
         
@@ -114,13 +113,11 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     /**
-     * Crear estadísticas - ✅ OPTIMIZADO PARA MÓVIL
+     * Crear estadísticas
      */
     createStats() {
         const { width, height } = this.game.config;
         const centerX = width / 2;
-        
-        // ✅ MÓVIL: Ajustar posición inicial
         const startY = IS_MOBILE ? 130 : 180;
         
         // Contenedor de estadísticas
@@ -137,7 +134,6 @@ export class GameOverScene extends Phaser.Scene {
         );
         statsContainer.add(scoreBox);
         
-        // ✅ MÓVIL: Espaciado reducido
         const spacing = IS_MOBILE ? 70 : 100;
         
         // High Score
@@ -160,9 +156,8 @@ export class GameOverScene extends Phaser.Scene {
         );
         statsContainer.add(levelBox);
         
-        // ✅ MÓVIL: Mostrar stats adicionales solo si hay espacio
+        // Mostrar stats adicionales solo si hay espacio
         if (!IS_MOBILE || height > 600) {
-            // Estadísticas adicionales (dos columnas)
             const leftCol = IS_MOBILE ? -100 : -150;
             const rightCol = IS_MOBILE ? 100 : 150;
             const statsY = spacing * 2 + 70;
@@ -187,12 +182,11 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     /**
-     * Crear caja de estadística - ✅ RESPONSIVE
+     * Crear caja de estadística
      */
     createStatBox(x, y, label, value, color, isBig) {
         const container = this.add.container(x, y);
         
-        // ✅ MÓVIL: Ajustar tamaños
         const boxWidth = IS_MOBILE ? 300 : 400;
         const boxHeight = isBig ? (IS_MOBILE ? 70 : 80) : (IS_MOBILE ? 55 : 60);
         
@@ -201,7 +195,6 @@ export class GameOverScene extends Phaser.Scene {
         bg.setStrokeStyle(2, Phaser.Display.Color.HexStringToColor(color).color, 0.5);
         container.add(bg);
         
-        // ✅ MÓVIL: Tamaños de fuente adaptativos
         const labelFontSize = isBig ? (IS_MOBILE ? '16px' : '18px') : (IS_MOBILE ? '12px' : '14px');
         const valueFontSize = isBig ? (IS_MOBILE ? '36px' : '42px') : (IS_MOBILE ? '24px' : '28px');
         const labelOffset = isBig ? (IS_MOBILE ? -18 : -20) : (IS_MOBILE ? -13 : -15);
@@ -229,10 +222,9 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     /**
-     * Crear estadística pequeña - ✅ RESPONSIVE
+     * Crear estadística pequeña
      */
     createSmallStat(container, x, y, label, value) {
-        // ✅ MÓVIL: Fuentes más pequeñas
         const labelFontSize = IS_MOBILE ? '12px' : '14px';
         const valueFontSize = IS_MOBILE ? '16px' : '20px';
         
@@ -253,12 +245,11 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     /**
-     * Mostrar nuevo récord - ✅ RESPONSIVE
+     * Mostrar nuevo récord
      */
     showNewRecord() {
         const { width, height } = this.game.config;
         
-        // ✅ MÓVIL: Posición y tamaño adaptativos
         const yPosition = IS_MOBILE ? height / 2 + 130 : height / 2 + 180;
         const fontSize = IS_MOBILE ? '20px' : '32px';
         
@@ -282,7 +273,7 @@ export class GameOverScene extends Phaser.Scene {
             repeat: -1
         });
         
-        // ✅ MÓVIL: Menos partículas de celebración
+        // Menos partículas de celebración en móvil
         const particleCount = IS_MOBILE ? 10 : 20;
         
         for (let i = 0; i < particleCount; i++) {
@@ -305,13 +296,12 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     /**
-     * Crear botones - ✅ COMPLETAMENTE REDISEÑADO PARA MÓVIL
+     * Crear botones - ✅ FIX COMPLETO PARA MÓVIL
      */
     createButtons() {
         const { width, height } = this.game.config;
         const centerX = width / 2;
         
-        // ✅ MÓVIL: Posición adaptativa
         const buttonsY = IS_MOBILE ? height - 120 : height - 150;
         const buttonSpacing = IS_MOBILE ? 100 : 120;
         
@@ -348,11 +338,11 @@ export class GameOverScene extends Phaser.Scene {
             });
         });
         
-        // ✅ MÓVIL: Instrucción más pequeña
+        // Instrucción
         const instructionY = IS_MOBILE ? height - 50 : height - 60;
         const instructionFontSize = IS_MOBILE ? '12px' : '16px';
         
-        const instruction = this.add.text(centerX, instructionY, 'Tap to play again', {
+        const instruction = this.add.text(centerX, instructionY, 'Tap buttons above to continue', {
             fontSize: instructionFontSize,
             fill: '#6366f1',
             fontFamily: 'Share Tech Mono'
@@ -375,10 +365,9 @@ export class GameOverScene extends Phaser.Scene {
     }
     
     /**
-     * Crear botón - ✅ OPTIMIZADO PARA MÓVIL
+     * Crear botón - ✅ COMPLETAMENTE CORREGIDO PARA MÓVIL
      */
     createButton(x, y, text, color, callback) {
-        // ✅ MÓVIL: Tamaños adaptativos
         const fontSize = IS_MOBILE ? '20px' : '24px';
         const padding = IS_MOBILE ? { x: 15, y: 8 } : { x: 20, y: 10 };
         
@@ -393,9 +382,9 @@ export class GameOverScene extends Phaser.Scene {
         button.setShadow(0, 0, color, 10, false, true);
         button.setScrollFactor(0);
         
-        // ✅ MÓVIL: Área de toque más grande
-        const bgWidth = button.width + (IS_MOBILE ? 50 : 40);
-        const bgHeight = button.height + (IS_MOBILE ? 30 : 20);
+        // ✅ MÓVIL: Área de toque MUY grande
+        const bgWidth = button.width + (IS_MOBILE ? 60 : 40);
+        const bgHeight = button.height + (IS_MOBILE ? 40 : 20);
         
         // Fondo del botón
         const bg = this.add.rectangle(x, y, bgWidth, bgHeight, 0x1a0033, 0.8);
@@ -406,26 +395,37 @@ export class GameOverScene extends Phaser.Scene {
         // Hacer interactivo
         bg.setInteractive({ useHandCursor: true });
         
-        // ✅ MÓVIL: Eventos touch mejorados
+        // ✅ FIX CRÍTICO: Variable para evitar múltiples activaciones
+        let isProcessing = false;
+        
+        // ✅ FIX: Callback INMEDIATO en pointerup
         bg.on('pointerdown', () => {
-            this.tweens.add({
-                targets: [bg, button],
-                scale: 0.95,
-                duration: 100
-            });
+            if (isProcessing) return;
+            bg.setAlpha(0.6);
+            button.setScale(0.95);
         });
         
         bg.on('pointerup', () => {
-            this.tweens.add({
-                targets: [bg, button],
-                scale: 1,
-                duration: 100,
-                onComplete: callback
+            if (isProcessing) return;
+            isProcessing = true;
+            
+            bg.setAlpha(1);
+            button.setScale(1);
+            
+            // ✅ FIX: Ejecutar callback INMEDIATAMENTE
+            this.time.delayedCall(50, () => {
+                callback();
             });
         });
         
+        bg.on('pointerout', () => {
+            bg.setAlpha(1);
+            button.setScale(1);
+        });
+        
+        // Hover solo en PC
         bg.on('pointerover', () => {
-            if (!IS_MOBILE) {
+            if (!IS_MOBILE && !isProcessing) {
                 this.tweens.add({
                     targets: [bg, button],
                     scale: 1.1,
@@ -434,13 +434,26 @@ export class GameOverScene extends Phaser.Scene {
             }
         });
         
-        bg.on('pointerout', () => {
-            this.tweens.add({
-                targets: [bg, button],
-                scale: 1,
-                duration: 200
+        // ✅ ALTERNATIVA MÓVIL: También hacer el texto interactivo
+        if (IS_MOBILE) {
+            button.setInteractive({ useHandCursor: true });
+            
+            button.on('pointerdown', () => {
+                if (isProcessing) return;
+                button.setScale(0.95);
             });
-        });
+            
+            button.on('pointerup', () => {
+                if (isProcessing) return;
+                isProcessing = true;
+                
+                button.setScale(1);
+                
+                this.time.delayedCall(50, () => {
+                    callback();
+                });
+            });
+        }
         
         // Crear container para agrupar
         const container = this.add.container(0, 0);
@@ -454,6 +467,9 @@ export class GameOverScene extends Phaser.Scene {
      * Jugar de nuevo
      */
     playAgain() {
+        // Evitar múltiples activaciones
+        if (this.scene.isActive('GameScene')) return;
+        
         this.cameras.main.fadeOut(500);
         this.time.delayedCall(500, () => {
             this.scene.start('GameScene');
@@ -464,6 +480,9 @@ export class GameOverScene extends Phaser.Scene {
      * Volver al menú
      */
     returnToMenu() {
+        // Evitar múltiples activaciones
+        if (this.scene.isActive('MenuScene')) return;
+        
         this.cameras.main.fadeOut(500);
         this.time.delayedCall(500, () => {
             this.scene.start('MenuScene');
