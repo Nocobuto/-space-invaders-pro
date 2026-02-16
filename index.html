@@ -2,19 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- ✅ CORRECCIÓN: Meta tags mejorados para móvil -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <title>NEON INVADERS - Space Shooter Game</title>
     
-    <!-- ✅ FAVICON - Elige UNA de estas opciones: -->
-    
-    <!-- Opción 1: Archivo .ico (si descargaste de favicon.io) -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    
-    <!-- Opción 2: SVG externo (si creaste favicon.svg) -->
-    <!-- <link rel="icon" type="image/svg+xml" href="favicon.svg"> -->
-    
-    <!-- Opción 3: SVG inline con emoji (rápido y fácil) -->
-    <!-- <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>👾</text></svg>"> -->
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>👾</text></svg>">
     
     <!-- Phaser.js Framework -->
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>

@@ -7,6 +7,8 @@
  * - Power-ups
  * - Colisiones
  * - UI en tiempo real
+ * 
+ * ✅ VERSIÓN OPTIMIZADA PARA MÓVIL
  */
 
 import { GAME_CONFIG, IS_MOBILE } from '../config.js';
@@ -47,9 +49,15 @@ export class GameScene extends Phaser.Scene {
         
         // Controles móviles
         this.touchControls = null;
-        
-        // ✅ NUEVO: Referencias del menú de pausa
         this.pauseContainer = null;
+        
+        // ✅ NUEVO: Estado de touch
+        this.touchState = {
+            left: false,
+            right: false,
+            fire: false
+        };
+        this.canFireTouch = true;
     }
     
     create() {
@@ -221,7 +229,7 @@ export class GameScene extends Phaser.Scene {
     }
     
     /**
-     * Configurar controles - ✅ CORREGIDO
+     * Configurar controles
      */
     setupControls() {
         // Teclado
@@ -229,7 +237,7 @@ export class GameScene extends Phaser.Scene {
         this.fireKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         
-        // ✅ CORRECCIÓN: Listener de pausa que funciona siempre
+        // Event listener de pausa que funciona siempre
         this.pauseKey.on('down', () => {
             this.togglePause();
         });
@@ -241,51 +249,119 @@ export class GameScene extends Phaser.Scene {
     }
     
     /**
-     * Crear controles táctiles
+     * Crear controles táctiles - ✅ COMPLETAMENTE REDISEÑADO PARA MÓVIL
      */
     createTouchControls() {
         const { width, height } = this.game.config;
         
         // Botón izquierdo
         const leftBtn = this.add.rectangle(
-            width * 0.15, height - 60,
-            100, 100,
-            0x9333ea, 0.3
-        ).setInteractive();
+            width * 0.15,
+            height - 60,
+            120, 120,
+            0x9333ea,
+            0.3
+        );
+        leftBtn.setInteractive();
+        leftBtn.setScrollFactor(0);
         
-        this.add.text(width * 0.15, height - 60, '←', {
+        const leftText = this.add.text(width * 0.15, height - 60, '←', {
             fontSize: '48px',
             fill: '#9333ea'
         }).setOrigin(0.5);
+        leftText.setScrollFactor(0);
+        
+        // ✅ CORRECCIÓN: Eventos táctiles correctos
+        leftBtn.on('pointerdown', () => {
+            this.touchState.left = true;
+            leftBtn.setAlpha(0.6);
+        });
+        
+        leftBtn.on('pointerup', () => {
+            this.touchState.left = false;
+            leftBtn.setAlpha(1);
+        });
+        
+        leftBtn.on('pointerout', () => {
+            this.touchState.left = false;
+            leftBtn.setAlpha(1);
+        });
         
         // Botón derecho
         const rightBtn = this.add.rectangle(
-            width * 0.85, height - 60,
-            100, 100,
-            0x9333ea, 0.3
-        ).setInteractive();
+            width * 0.85,
+            height - 60,
+            120, 120,
+            0x9333ea,
+            0.3
+        );
+        rightBtn.setInteractive();
+        rightBtn.setScrollFactor(0);
         
-        this.add.text(width * 0.85, height - 60, '→', {
+        const rightText = this.add.text(width * 0.85, height - 60, '→', {
             fontSize: '48px',
             fill: '#9333ea'
         }).setOrigin(0.5);
+        rightText.setScrollFactor(0);
+        
+        // ✅ CORRECCIÓN: Eventos táctiles correctos
+        rightBtn.on('pointerdown', () => {
+            this.touchState.right = true;
+            rightBtn.setAlpha(0.6);
+        });
+        
+        rightBtn.on('pointerup', () => {
+            this.touchState.right = false;
+            rightBtn.setAlpha(1);
+        });
+        
+        rightBtn.on('pointerout', () => {
+            this.touchState.right = false;
+            rightBtn.setAlpha(1);
+        });
         
         // Botón de disparo
         const fireBtn = this.add.rectangle(
-            width / 2, height - 60,
-            100, 100,
-            0x3b82f6, 0.3
-        ).setInteractive();
+            width / 2,
+            height - 60,
+            120, 120,
+            0x3b82f6,
+            0.3
+        );
+        fireBtn.setInteractive();
+        fireBtn.setScrollFactor(0);
         
-        this.add.text(width / 2, height - 60, '🔥', {
+        const fireText = this.add.text(width / 2, height - 60, '🔥', {
             fontSize: '36px'
         }).setOrigin(0.5);
+        fireText.setScrollFactor(0);
+        
+        // ✅ CORRECCIÓN: Sistema de disparo mejorado
+        fireBtn.on('pointerdown', () => {
+            this.touchState.fire = true;
+            fireBtn.setAlpha(0.6);
+        });
+        
+        fireBtn.on('pointerup', () => {
+            this.touchState.fire = false;
+            this.canFireTouch = true;
+            fireBtn.setAlpha(1);
+        });
+        
+        fireBtn.on('pointerout', () => {
+            this.touchState.fire = false;
+            this.canFireTouch = true;
+            fireBtn.setAlpha(1);
+        });
         
         // Guardar referencias
         this.touchControls = {
             left: leftBtn,
             right: rightBtn,
-            fire: fireBtn
+            fire: fireBtn,
+            leftText: leftText,
+            rightText: rightText,
+            fireText: fireText
         };
     }
     
@@ -303,6 +379,7 @@ export class GameScene extends Phaser.Scene {
             fontStyle: 'bold'
         });
         this.scoreText.setShadow(0, 0, '#9333ea', 10, true, true);
+        this.scoreText.setScrollFactor(0);
         
         // High Score
         this.highScoreText = this.add.text(width / 2, 20, `HI-SCORE: ${this.scoreManager.highScore}`, {
@@ -310,6 +387,7 @@ export class GameScene extends Phaser.Scene {
             fill: '#fbbf24',
             fontFamily: 'Orbitron'
         }).setOrigin(0.5);
+        this.highScoreText.setScrollFactor(0);
         
         // Level
         this.levelText = this.add.text(width - 20, 20, `LEVEL: ${this.currentLevel}`, {
@@ -319,6 +397,7 @@ export class GameScene extends Phaser.Scene {
             fontStyle: 'bold'
         }).setOrigin(1, 0);
         this.levelText.setShadow(0, 0, '#3b82f6', 10, true, true);
+        this.levelText.setScrollFactor(0);
         
         // Vidas
         this.livesGroup = this.add.group();
@@ -340,6 +419,7 @@ export class GameScene extends Phaser.Scene {
         for (let i = 0; i < this.player.lives; i++) {
             const life = this.add.sprite(startX + (i * 30), startY, 'player');
             life.setScale(0.6);
+            life.setScrollFactor(0);
             this.livesGroup.add(life);
         }
     }
@@ -393,38 +473,45 @@ export class GameScene extends Phaser.Scene {
     }
     
     /**
-     * Manejar input del jugador
+     * Manejar input del jugador - ✅ MEJORADO PARA MÓVIL
      */
     handlePlayerInput(time) {
         // Movimiento
         let direction = 0;
         
+        // Teclado (PC)
         if (this.cursors.left.isDown) {
             direction = -1;
         } else if (this.cursors.right.isDown) {
             direction = 1;
         }
         
-        // Controles táctiles
-        if (IS_MOBILE && this.touchControls) {
-            if (this.touchControls.left.input && this.touchControls.left.input.pointerOver()) {
+        // ✅ CORRECCIÓN: Touch controls mejorados
+        if (IS_MOBILE && this.touchState) {
+            if (this.touchState.left) {
                 direction = -1;
-            } else if (this.touchControls.right.input && this.touchControls.right.input.pointerOver()) {
+            } else if (this.touchState.right) {
                 direction = 1;
             }
         }
         
         this.player.move(direction);
         
-        // Disparo
-        const firePressed = Phaser.Input.Keyboard.JustDown(this.fireKey) ||
-            (IS_MOBILE && this.touchControls && 
-             this.touchControls.fire.input && 
-             this.touchControls.fire.input.pointerDown);
+        // Disparo - Teclado
+        if (Phaser.Input.Keyboard.JustDown(this.fireKey)) {
+            if (this.player.canFire(time)) {
+                this.firePlayerBullet();
+                this.player.updateFireTime(time);
+            }
+        }
         
-        if (firePressed && this.player.canFire(time)) {
-            this.firePlayerBullet();
-            this.player.updateFireTime(time);
+        // ✅ CORRECCIÓN: Disparo táctil mejorado
+        if (IS_MOBILE && this.touchState && this.touchState.fire && this.canFireTouch) {
+            if (this.player.canFire(time)) {
+                this.firePlayerBullet();
+                this.player.updateFireTime(time);
+                this.canFireTouch = false;
+            }
         }
     }
     
@@ -638,22 +725,21 @@ export class GameScene extends Phaser.Scene {
     }
     
     /**
-     * Crear explosión de partículas - ✅ CORREGIDO
+     * Crear explosión de partículas
      */
     createExplosion(x, y) {
-        // ✅ CORRECCIÓN: Crear emisor y destruirlo después
         const particles = this.add.particles(x, y, 'particle', {
             speed: { min: 100, max: 200 },
             angle: { min: 0, max: 360 },
             scale: { start: 1, end: 0 },
             blendMode: 'ADD',
-            lifespan: 300,  // Duración de cada partícula: 300ms
+            lifespan: 300,
             gravityY: 0,
             quantity: 10,
             tint: 0x10b981
         });
         
-        // ✅ CORRECCIÓN: Destruir el emisor después de 400ms (un poco más que lifespan)
+        // Destruir el emisor después de 400ms
         this.time.delayedCall(400, () => {
             particles.destroy();
         });
@@ -695,6 +781,7 @@ export class GameScene extends Phaser.Scene {
             fontFamily: 'Orbitron',
             fontStyle: 'bold'
         }).setOrigin(1, 0);
+        text.setScrollFactor(0);
         
         // Animación de desvanecimiento
         this.tweens.add({
@@ -767,12 +854,14 @@ export class GameScene extends Phaser.Scene {
             align: 'center'
         }).setOrigin(0.5);
         text.setShadow(0, 0, '#10b981', 20, true, true);
+        text.setScrollFactor(0);
         
         const bonusText = this.add.text(width / 2, height / 2 + 80, `BONUS: +${bonus}`, {
             fontSize: '32px',
             fill: '#fbbf24',
             fontFamily: 'Orbitron'
         }).setOrigin(0.5);
+        bonusText.setScrollFactor(0);
         
         // Siguiente nivel después de 3 segundos
         this.time.delayedCall(3000, () => {
@@ -806,7 +895,7 @@ export class GameScene extends Phaser.Scene {
     }
     
     /**
-     * Toggle pause - ✅ CORREGIDO
+     * Toggle pause
      */
     togglePause() {
         // No pausar si el juego terminó
@@ -824,12 +913,12 @@ export class GameScene extends Phaser.Scene {
     }
     
     /**
-     * Mostrar menú de pausa - ✅ CORREGIDO
+     * Mostrar menú de pausa
      */
     showPauseMenu() {
         const { width, height } = this.game.config;
         
-        // ✅ CORRECCIÓN: Crear container para todo el menú de pausa
+        // Crear container para todo el menú de pausa
         this.pauseContainer = this.add.container(0, 0);
         
         // Overlay
@@ -847,7 +936,7 @@ export class GameScene extends Phaser.Scene {
         pauseText.setShadow(0, 0, '#9333ea', 20, true, true);
         this.pauseContainer.add(pauseText);
         
-        // ✅ NUEVO: Instrucción de cómo despausar
+        // Instrucción de cómo despausar
         const instruction = this.add.text(width / 2, height / 2 + 30, 'Press ESC to resume', {
             fontSize: '24px',
             fill: '#a78bfa',
@@ -864,7 +953,7 @@ export class GameScene extends Phaser.Scene {
             repeat: -1
         });
         
-        // ✅ NUEVO: Botón alternativo para despausar (especialmente útil en móvil)
+        // Botón alternativo para despausar
         const resumeButton = this.add.text(width / 2, height / 2 + 100, 'RESUME', {
             fontSize: '32px',
             fill: '#10b981',
@@ -889,10 +978,10 @@ export class GameScene extends Phaser.Scene {
     }
     
     /**
-     * Ocultar menú de pausa - ✅ CORREGIDO
+     * Ocultar menú de pausa
      */
     hidePauseMenu() {
-        // ✅ CORRECCIÓN: Destruir el container completo
+        // Destruir el container completo
         if (this.pauseContainer) {
             this.pauseContainer.destroy();
             this.pauseContainer = null;
